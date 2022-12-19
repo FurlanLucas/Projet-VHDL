@@ -23,15 +23,15 @@ architecture Behavioral of topLevel is
     signal ACCEL_MAG_OUT_TL         : std_logic_vector (11 downto 0);
     signal ACCEL_TMP_OUT_TL         : std_logic_vector (11 downto 0);
     signal commande_mux8            : std_logic_vector (2 downto 0);
-    signal aff0                     :  std_logic_vector(6 downto 0);
-    signal aff1                     :  std_logic_vector(6 downto 0);
-    signal aff2                     :  std_logic_vector(6 downto 0);
-    signal aff3                     :  std_logic_vector(6 downto 0);
-    signal aff4                     :  std_logic_vector(6 downto 0);
-    signal aff5                     :  std_logic_vector(6 downto 0);
-    signal aff6                     :  std_logic_vector(6 downto 0);
-    signal aff7                     :  std_logic_vector(6 downto 0);
-    signal CE_aff                   :  std_logic;
+    signal aff0                     : std_logic_vector(6 downto 0);
+    signal aff1                     : std_logic_vector(6 downto 0);
+    signal aff2                     : std_logic_vector(6 downto 0);
+    signal aff3                     : std_logic_vector(6 downto 0);
+    signal aff4                     : std_logic_vector(6 downto 0);
+    signal aff5                     : std_logic_vector(6 downto 0);
+    signal aff6                     : std_logic_vector(6 downto 0);
+    signal aff7                     : std_logic_vector(6 downto 0);
+    signal CE_aff                   : std_logic;
     signal ACCEL_MAG_OUT_TL_FILTRE  : std_logic_vector (11 downto 0);
     signal ACCEL_TMP_OUT_TL_FILTRE  : std_logic_vector (11 downto 0);
     signal compteur_val             : std_logic_vector (13 downto 0);
@@ -41,7 +41,7 @@ architecture Behavioral of topLevel is
            SYSCLK_FREQUENCY_HZ : integer := 108000000;
            SCLK_FREQUENCY_HZ   : integer := 1000000;
            NUM_READS_AVG       : integer := 16;
-           UPDATE_FREQUENCY_HZ : integer := 100
+           UPDATE_FREQUENCY_HZ : integer := 1000
         );
         port(
          SYSCLK     : in STD_LOGIC; -- System Clock

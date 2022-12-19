@@ -24,7 +24,11 @@ begin
 	
 		if clk_entree'event and (clk_entree = '1') then
 		
-			if (clk_perc_entree = '1') then
+		    if (reset = '1') then
+		       buf_choix <= "000";
+		       buf_anode <= "00000001";
+		      
+			elsif (clk_perc_entree = '1') then
 			
 				if (buf_choix /= "111") then
 					buf_choix <= buf_choix + 1;

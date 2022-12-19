@@ -14,34 +14,34 @@ begin
 	begin
 		case entree is
 		    -- CA, CB, CC, CD, CE, CF on (entree = 0)
-			when "0000" => sortie <= "0000001";
+			when "0000" => sortie <= "1000000";
 			
 			-- CB, CC on (entree = 1)
-			when "0001" => sortie <= "1001111"; 
+			when "0001" => sortie <= "1111001"; 
 	
 			-- AA, AB, AG, AE, AD on (entree = 2)
-			when "0010" => sortie <= "0010010"; 
+			when "0010" => sortie <= "0100100"; 
 			
 			-- AA, AB, AC, AD, AG on (entree = 3)
-			when "0011" => sortie <= "0000110";
+			when "0011" => sortie <= "0110000";
 			
 			-- AB, AC, AG, AF on (entree = 4)
-			when "0100" => sortie <= "1001100";
+			when "0100" => sortie <= "0011001";
 			
 			-- AA, AB, AG, AE, AD on (entree = 5)
-			when "0101" => sortie <= "0100100";
+			when "0101" => sortie <= "0010010";
 			
 			-- AA, AC, AD, AE, AF, AG on (entree = 6)
-			when "0110" => sortie <= "0100000";
+			when "0110" => sortie <= "0000010";
 			
 			-- AA, AB, AC on (entree = 7)
-			when "0111" => sortie <= "0001111";
+			when "0111" => sortie <= "1111000";
 			
 			-- AA, AB, AC, AD, AE, AF, AG on (entree = 8)
 			when "1000" => sortie <= "0000000";
 			
 			-- AA, AB, AC, AD, AF, AG, on (entree = 9)
-			when "1001" => sortie <= "0000100";
+			when "1001" => sortie <= "0010000";
 			
 			-- Other cases
 			when others => sortie <= "1111111";

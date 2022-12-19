@@ -30,7 +30,7 @@ begin
 			when "101" => S_sortie <= E2_entree;
 			when "110" => S_sortie <= E1_entree;
 			when "111" => S_sortie <= E0_entree;
-			when others => S_sortie <= "0000000";
+			when others => S_sortie <= "1111111";
 		end case;
 	end process;
 	
