@@ -51,8 +51,8 @@ begin
 	TEMP_DEZ_DUT : transcodeurUnit port map(entree => temp_dez,
 										    sortie => sortie_dez_temp);
 											
-	sortie_C <= "1001110";
-	sortie_rien <= "0000000";
+	sortie_C <= "0110001";
+	sortie_rien <= "1111111";
 											
 	process(compteur_valeur)
 		variable sobra    : std_logic_vector(13 downto 0);
