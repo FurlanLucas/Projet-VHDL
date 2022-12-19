@@ -42,7 +42,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity AccelerometerCtl is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 100
@@ -60,9 +60,9 @@ port
 
 -- Accelerometer data signals
  ACCEL_X_OUT    : out STD_LOGIC_VECTOR (8 downto 0);
- ACCEL_Y_OUT    : out STD_LOGIC_VECTOR (8 downto 0)
- --ACCEL_MAG_OUT  : out STD_LOGIC_VECTOR (11 downto 0);
- --ACCEL_TMP_OUT  : out STD_LOGIC_VECTOR (11 downto 0)
+ ACCEL_Y_OUT    : out STD_LOGIC_VECTOR (8 downto 0);
+ ACCEL_MAG_OUT  : out STD_LOGIC_VECTOR (11 downto 0);
+ ACCEL_TMP_OUT  : out STD_LOGIC_VECTOR (11 downto 0)
 
 );
 end AccelerometerCtl;
@@ -72,7 +72,7 @@ architecture Behavioral of AccelerometerCtl is
 component ADXL362Ctrl
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 1000
@@ -101,7 +101,7 @@ end component;
 component AccelArithmetics
 generic
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    ACC_X_Y_MAX         : STD_LOGIC_VECTOR (9 downto 0) := "01" & X"FF"; -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN         : STD_LOGIC_VECTOR (9 downto 0) := (others => '0') -- corresponding to -1g
 );
@@ -131,8 +131,6 @@ constant ACC_RESET_IDLE_CLOCKS   : integer := ((ACC_RESET_PERIOD_US*1000)/(10000
 signal  ACCEL_X    : STD_LOGIC_VECTOR (11 downto 0);
 signal  ACCEL_Y    : STD_LOGIC_VECTOR (11 downto 0);
 signal  ACCEL_Z    : STD_LOGIC_VECTOR (11 downto 0);
-signal sig_ACCEL_MAG_OUT : STD_LOGIC_VECTOR (11 downto 0);
-signal ACCEL_TMP_OUT : STD_LOGIC_VECTOR (11 downto 0);
 
 signal Data_Ready : STD_LOGIC;
 
@@ -192,7 +190,7 @@ port map
 Accel_Calculation: AccelArithmetics
 GENERIC MAP
 (
-   SYSCLK_FREQUENCY_HZ  => 100000000,
+   SYSCLK_FREQUENCY_HZ  => 108000000,
    ACC_X_Y_MAX          => "01" & X"FF", -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN          => (others => '0') -- corresponding to -1g
 )
@@ -210,8 +208,7 @@ PORT MAP
  -- Accelerometer data output signals to be sent to the VGA display
  ACCEL_X_OUT => ACCEL_X_OUT,
  ACCEL_Y_OUT => ACCEL_Y_OUT,
- ACCEL_MAG_OUT => sig_ACCEL_MAG_OUT
+ ACCEL_MAG_OUT => ACCEL_MAG_OUT
 );
 
 end Behavioral;
-
