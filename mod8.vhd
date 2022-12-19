@@ -22,13 +22,14 @@ begin
 		variable buf_aux : std_logic; -- Buffer auxiliary variable
 	begin 
 	
-		if clk_entree'event and (clk_entree = '1') then
-		
-		    if (reset = '1') then
-		       buf_choix <= "000";
-		       buf_anode <= "00000001";
+	    if (reset = '1') then
+		    buf_choix <= "000";
+		    buf_anode <= "11111110";
+		    anode_sortie <= "11111111";
+		       
+		elsif clk_entree'event and (clk_entree = '1') then
 		      
-			elsif (clk_perc_entree = '1') then
+			if (clk_perc_entree = '1') then
 			
 				if (buf_choix /= "111") then
 					buf_choix <= buf_choix + 1;
@@ -36,15 +37,15 @@ begin
 					buf_choix <= "000";
 				end if;
 				
-				buf_aux := buf_anode(0);
-				buf_anode(0) <= buf_anode(1);
-				buf_anode(1) <= buf_anode(2);
-				buf_anode(2) <= buf_anode(3);
-				buf_anode(3) <= buf_anode(4);
-				buf_anode(4) <= buf_anode(5);
-				buf_anode(5) <= buf_anode(6);
-				buf_anode(6) <= buf_anode(7);
-				buf_anode(7) <= buf_aux;
+				buf_aux := buf_anode(7);
+				buf_anode(1) <= buf_anode(0);
+				buf_anode(2) <= buf_anode(1);
+				buf_anode(3) <= buf_anode(2);
+				buf_anode(4) <= buf_anode(3);
+				buf_anode(5) <= buf_anode(4);
+				buf_anode(6) <= buf_anode(5);
+				buf_anode(7) <= buf_anode(6);
+				buf_anode(0) <= buf_aux;
 			end if;
 			
 			choix_afficheur <= std_logic_vector(buf_choix);

@@ -38,6 +38,14 @@ begin
 		wait for 5 ns;
 	end process;
 	
+	RST : process
+	begin
+		reset_TB <= '1';
+		wait for 20 ns;
+		reset_TB <= '0';
+		wait for 5000 ns;
+	end process;
+	
 	STIMULUS : process
 	begin
 		clk_perc_entree_TB <= '1';

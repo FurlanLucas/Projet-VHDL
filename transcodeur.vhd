@@ -51,12 +51,13 @@ begin
 	TEMP_DEZ_DUT : transcodeurUnit port map(entree => temp_dez,
 										    sortie => sortie_dez_temp);
 											
-	sortie_C <= "0110001";
+	sortie_C <= "1000110";
 	sortie_rien <= "1111111";
 											
 	process(compteur_valeur)
 		variable sobra    : std_logic_vector(13 downto 0);
 	begin
+	     
         -- Take the first digit
         if (unsigned(compteur_valeur) < 1000) then
             sobra := compteur_valeur;
