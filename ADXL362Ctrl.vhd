@@ -42,7 +42,7 @@
 --            - Prepares and loads the command register, Cmd_Reg with the appropiate command string (configure a specific 
 --          register, read data or read status)
 --            - Loads Cnt_Bytes_Sent and Cnt_Bytes_Rec with the number of bytes to be sent and/or received
---            - Activates StartSpiSendRec to start the SPI Send/Receive Control State Machine and wait for its answ_ier 
+--            - Activates StartSpiSendRec to start the SPI Send/Receive Control State Machine and wait for its answer 
 --          by reading the SPI_SendRec_Done signal
 --
 --          Note that between each SPI transaction (Register write or Register read) the SS signal has to be deactivated
@@ -89,7 +89,7 @@ use IEEE.math_real.all;
 entity ADXL362Ctrl is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    SCLK_FREQUENCY_HZ   : integer := 1000000;
    NUM_READS_AVG       : integer := 16;
    UPDATE_FREQUENCY_HZ : integer := 1000
@@ -120,7 +120,7 @@ architecture Behavioral of ADXL362Ctrl is
 component SPI_If is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer:= 100000000;
+   SYSCLK_FREQUENCY_HZ : integer:= 108000000;
    SCLK_FREQUENCY_HZ : integer:= 1000000
 );
 port
@@ -829,4 +829,3 @@ begin
 end process Pipe_Data_Ready;
  
 end Behavioral;
-
