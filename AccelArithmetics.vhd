@@ -28,7 +28,6 @@
 --
 -- Revision: 
 -- Revision 0.01 - File Created
--- Revision 0.02 - (07/07/17 - ArtVVB) Fixed an issue where all negative Y axis accelerometer values were clipped to the positive maximum  
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -50,7 +49,7 @@ use IEEE.std_logic_signed.all;
 entity AccelArithmetics is
 generic 
 (
-   SYSCLK_FREQUENCY_HZ : integer := 100000000;
+   SYSCLK_FREQUENCY_HZ : integer := 108000000;
    ACC_X_Y_MAX         : STD_LOGIC_VECTOR (9 downto 0) := "01" & X"FF"; -- 511 pixels, corresponding to +1g
    ACC_X_Y_MIN         : STD_LOGIC_VECTOR (9 downto 0) := (others => '0') -- corresponding to -1g
 );
@@ -87,14 +86,17 @@ COMPONENT Square_Root
     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
   );
 END COMPONENT;
-ATTRIBUTE SYN_BLACK_BOX : BOOLEAN;
-ATTRIBUTE SYN_BLACK_BOX OF Square_Root : COMPONENT IS TRUE;
-ATTRIBUTE BLACK_BOX_PAD_PIN : STRING;
-ATTRIBUTE BLACK_BOX_PAD_PIN OF Square_Root : COMPONENT IS "aclk,s_axis_cartesian_tvalid,s_axis_cartesian_tdata[31:0],m_axis_dout_tvalid,m_axis_dout_tdata[15:0]";
+--ATTRIBUTE SYN_BLACK_BOX : BOOLEAN;
+--ATTRIBUTE SYN_BLACK_BOX OF Square_Root : COMPONENT IS TRUE;
+--ATTRIBUTE BLACK_BOX_PAD_PIN : STRING;
+--ATTRIBUTE BLACK_BOX_PAD_PIN OF Square_Root : COMPONENT IS "aclk,s_axis_cartesian_tvalid,s_axis_cartesian_tdata[31:0],m_axis_dout_tvalid,m_axis_dout_tdata[15:0]";
 
 constant SUM_FACTOR : std_logic_vector (12 downto 0) :=  '0' & X"7FF"; --2047
 constant LOWER_ACC_BOUNDARY : std_logic_vector (9 downto 0) := "00" & X"FF"; -- 255
 constant UPPER_ACC_BOUNDARY : std_logic_vector (9 downto 0) := "10" & X"FF"; -- 767
+
+-- Invert Y axis data in order to display it on the screen correctly
+signal ACCEL_Y_IN_INV : STD_LOGIC_VECTOR (11 downto 0);
 
 signal ACCEL_X_SUM : std_logic_vector (12 downto 0) := (others => '0'); -- one more bit to keep the sign extension
 signal ACCEL_Y_SUM : std_logic_vector (12 downto 0) := (others => '0');
@@ -105,7 +107,6 @@ signal ACCEL_Y_SUM_SHIFTED : std_logic_vector (9 downto 0) := (others => '0');
 signal ACCEL_X_CLIP : std_logic_vector (9 downto 0) := (others => '0');
 signal ACCEL_Y_CLIP : std_logic_vector (9 downto 0) := (others => '0');
 
-
 -- Calculate magnitude
 
 -- Pipe Data_Ready
@@ -115,14 +116,15 @@ signal ACCEL_X_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 signal ACCEL_Y_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 signal ACCEL_Z_SQUARE : std_logic_vector (23 downto 0) := (others => '0');
 
-signal ACCEL_MAG_SQUARE : std_logic_vector (25 downto 0) := (others => '0');
+signal ACCEL_MAG_SQUARE : std_logic_vector (31 downto 0) := (others => '0');
 signal ACCEL_MAG_SQRT: std_logic_vector (13 downto 0) := (others => '0');
 signal m_axis_dout_tdata: std_logic_vector (15 downto 0);
 
-
-
-
 begin
+
+-- Invert Accel_Y data to display on the screen the box movement 
+-- on the Y axis according to the board movement
+ACCEL_Y_IN_INV <= ACCEL_Y_IN;
 
 -- Add 2047 to the incoming acceleration data
 -- Therefore ACCEL_X_SUM and ACCEL_Y_SUM will be scaled to 
@@ -140,10 +142,10 @@ begin
             ACCEL_X_SUM <= ('0' & ACCEL_X_IN) + SUM_FACTOR;
          end if;
          
-         if ACCEL_Y_IN(11) = '1' then -- if negative, keep the sign extension
-            ACCEL_Y_SUM <= ('1' & ACCEL_Y_IN) + SUM_FACTOR;
+         if ACCEL_Y_IN_INV(11) = '1' then -- if negative, keep the sign extension
+            ACCEL_Y_SUM <= ('1' & ACCEL_Y_IN_INV) + SUM_FACTOR;
          else
-            ACCEL_Y_SUM <= ('0' & ACCEL_Y_IN) + SUM_FACTOR;
+            ACCEL_Y_SUM <= ('0' & ACCEL_Y_IN_INV) + SUM_FACTOR;
 
          end if;
       end if;
@@ -184,9 +186,7 @@ end process Accel_Clip;
  
 -- ACCEL_X_CLIP and ACCEL_Y_CLIP values (0-511) can be represented on 9 bits
 ACCEL_X_OUT <= ACCEL_X_CLIP(8 downto 0);
--- Invert ACCEL_Y_CLIP data to display on the screen the box movement 
--- on the Y axis according to the board movement
-ACCEL_Y_OUT <= (NOT ACCEL_Y_CLIP(8 downto 0)) + "000000001";
+ACCEL_Y_OUT <= NOT ACCEL_Y_CLIP(8 downto 0);
 
 -- Pipe Data_Ready
 Pipe_Data_Ready : process (SYSCLK, RESET, Data_Ready, Data_Ready_0)
@@ -220,7 +220,7 @@ Calculate_Square_Sum: process (SYSCLK, Data_Ready_0, ACCEL_X_SQUARE, ACCEL_Y_SQU
 begin
    if SYSCLK'EVENT and SYSCLK = '1' then
       if Data_Ready_0 = '1' then 
-         ACCEL_MAG_SQUARE <= ("00" & ACCEL_X_SQUARE) + ("00" & ACCEL_Y_SQUARE) + ("00" & ACCEL_Z_SQUARE);
+         ACCEL_MAG_SQUARE <= "000000" & (("00" & ACCEL_X_SQUARE) + ("00" & ACCEL_Y_SQUARE) + ("00" & ACCEL_Z_SQUARE));
       end if;
    end if;
 end process Calculate_Square_Sum;
@@ -230,11 +230,10 @@ Magnitude_Calculation : Square_Root
   PORT MAP (
     aclk => SYSCLK,
     s_axis_cartesian_tvalid => Data_Ready_1,
-    s_axis_cartesian_tdata => ("000000" & ACCEL_MAG_SQUARE),
+    s_axis_cartesian_tdata => (ACCEL_MAG_SQUARE),
     m_axis_dout_tvalid => open,
     m_axis_dout_tdata => m_axis_dout_tdata
   );
-  
   
  ACCEL_MAG_SQRT <= m_axis_dout_tdata (13 downto 0);
 
@@ -242,4 +241,3 @@ Magnitude_Calculation : Square_Root
 ACCEL_MAG_OUT <= ACCEL_MAG_SQRT(13 downto 2);
 
 end Behavioral;
-

@@ -124,7 +124,7 @@ begin
                                                      ACCEL_X_OUT => ACCEL_X_OUT_TL,
                                                      ACCEL_Y_OUT => ACCEL_Y_OUT_TL,
                                                      ACCEL_MAG_OUT => ACCEL_MAG_OUT_TL,
-                                                     ACCEL_TMP_OUT => ACCEL_MAG_OUT_TL);
+                                                     ACCEL_TMP_OUT => ACCEL_TMP_OUT_TL);
     
 
     mux8_DUT : mux8 port map(command_entree => commande_mux8,
