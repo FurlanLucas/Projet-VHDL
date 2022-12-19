@@ -139,10 +139,10 @@ begin
                              S_sortie => affch);
                            
     mod8_DUT    : mod8 port map(clk_entree       => CLK,
-                             reset           => RESET,
-                             clk_perc_entree => CE_aff,
-                             anode_sortie    => anode,
-                             choix_afficheur => commande_mux8);                        
+                                reset           => RESET,
+                                clk_perc_entree => CE_aff,
+                                anode_sortie    => anode,
+                                choix_afficheur => commande_mux8);                        
                             
     ges_freq_DUT : ges_freq port map(CLK       => CLK,
                                      RESET           => RESET,

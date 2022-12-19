@@ -15,14 +15,16 @@ architecture peakDetector_arch of peakDetector is
 	
 	constant WindowWidth : integer := 16;
 	constant WindowWidthBits : integer := 4;
-	
+	constant bruitAmplitude : unsigned(11 downto 0) := to_unsigned(0, 12);
 	
     signal buff : unsigned(11+WindowWidthBits downto 0) := to_unsigned(0, 12+WindowWidthBits);
     signal moyenne : unsigned(11 downto 0);
-    signal moyenne_precedent : unsigned(11 downto 0);
+    signal moyenne_precedente : unsigned(11 downto 0);
+    signal moyenne_precedente2 : unsigned(11 downto 0);
     signal counter_fenetre : unsigned(WindowWidthBits-1 downto 0) := 
 	                                      to_unsigned(WindowWidth-1, WindowWidthBits);
     signal buff_out : unsigned(13 downto 0) := to_unsigned(0, 14);
+    
     	
 	
 
@@ -47,11 +49,12 @@ begin
     process(moyenne)
     begin
 	
-        if(moyenne < moyenne_precedent) then
+        if(moyenne < moyenne_precedente - bruitAmplitude) and (moyenne_precedente > moyenne_precedente2 + bruitAmplitude) then
             buff_out <= buff_out + 1;
             
         end if;
-        moyenne_precedent <= moyenne;
+        moyenne_precedente <= moyenne;
+        moyenne_precedente2 <= moyenne_precedente;
 		
     end process;
 
