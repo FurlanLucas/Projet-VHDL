@@ -12,39 +12,63 @@ end entity;
 
 architecture filtre_arch of filtre is
 
-	constant DataWidth : integer := 14;
+	constant DataWidth : integer := 15;
 	
-    signal mag1 : std_logic_vector(11 downto 0);
-    signal mag2 : std_logic_vector(11 downto 0);
-    signal mag3 : std_logic_vector(11 downto 0);
-	signal mag4 : std_logic_vector(11 downto 0);
-    signal mag5 : std_logic_vector(11 downto 0);
-    signal mag6 : std_logic_vector(11 downto 0);
-	signal mag7 : std_logic_vector(11 downto 0);
+    signal mag01 : std_logic_vector(11 downto 0);
+    signal mag02 : std_logic_vector(11 downto 0);
+    signal mag03 : std_logic_vector(11 downto 0);
+	signal mag04 : std_logic_vector(11 downto 0);
+    signal mag05 : std_logic_vector(11 downto 0);
+    signal mag06 : std_logic_vector(11 downto 0);
+	signal mag07 : std_logic_vector(11 downto 0);
+	signal mag08 : std_logic_vector(11 downto 0);
+    signal mag09 : std_logic_vector(11 downto 0);
+    signal mag10 : std_logic_vector(11 downto 0);
+	signal mag11 : std_logic_vector(11 downto 0);
+    signal mag12 : std_logic_vector(11 downto 0);
+    signal mag13 : std_logic_vector(11 downto 0);
+	signal mag14 : std_logic_vector(11 downto 0);
+	signal mag15 : std_logic_vector(11 downto 0);
     signal buf : unsigned(DataWidth downto 0);
     
 begin
 
     process(entree)
     begin
-            mag1 <= entree;
-            mag2 <= mag1;
-            mag3 <= mag2;
-			mag4 <= mag3;
-            mag5 <= mag4;
-			mag6 <= mag5;
-            mag7 <= mag6;
-           
+            mag01 <= entree;
+            mag02 <= mag01;
+            mag03 <= mag02;
+			mag04 <= mag03;
+            mag05 <= mag04;
+			mag06 <= mag05;
+            mag07 <= mag06;
+            mag08 <= mag07;
+            mag09 <= mag08;
+			mag10 <= mag09;
+            mag11 <= mag10;
+			mag12 <= mag11;
+            mag13 <= mag12;
+            mag14 <= mag13;
+            mag15 <= mag14;
+                       
             buf <= (to_unsigned(0, DataWidth-11) & unsigned(entree)) + 
-			       (to_unsigned(0, DataWidth-11) & unsigned(mag1)) +
-			       (to_unsigned(0, DataWidth-11) & unsigned(mag2)) + 
-				   (to_unsigned(0, DataWidth-11) & unsigned(mag3)) +
-				   (to_unsigned(0, DataWidth-11) & unsigned(mag4)) + 
-				   (to_unsigned(0, DataWidth-11) & unsigned(mag5)) +
-			       (to_unsigned(0, DataWidth-11) & unsigned(mag6)) + 
-				   (to_unsigned(0, DataWidth-11) & unsigned(mag7));
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag01)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag02)) + 
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag03)) +
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag04)) + 
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag05)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag06)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag07)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag08)) + 
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag09)) +
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag10)) +
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag11)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag12)) +
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag13)) +
+			       (to_unsigned(0, DataWidth-11) & unsigned(mag14)) +
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag15));
             
-            sortie <= std_logic_vector(buf(DataWidth downto 3));
+            sortie <= std_logic_vector(buf(DataWidth downto 4));
         
     end process;
 

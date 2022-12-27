@@ -3,17 +3,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
-entity peakDetector_TB is
+entity windowing_TB is
 end entity;
 
-architecture peakDetector_TB_arch of peakDetector_TB is
+architecture windowing_TB_arch of windowing_TB is
 
-	component peakDetector
+	component windowing
 		port(CLK    : in std_logic;
 		     CE     : in std_logic;
 			 reset  : in std_logic;
 			 entree : in std_logic_vector(11 downto 0);
-			 sortie: out std_logic_vector(13 downto 0);
+			 sortie: out std_logic_vector(11 downto 0);
 			 test : out std_logic);
 	end component;
 	
@@ -21,12 +21,12 @@ architecture peakDetector_TB_arch of peakDetector_TB is
 	signal CE_TB     : std_logic;
 	signal reset_TB  : std_logic;
  	signal entree_TB : std_logic_vector(11 downto 0);
-	signal sortie_TB : std_logic_vector(13 downto 0);
+	signal sortie_TB : std_logic_vector(11 downto 0);
 	signal test_TB :  std_logic;
 	
 begin
 
-	DUT : peakDetector port map(CLK => CLK_TB,
+	DUT : windowing port map(CLK => CLK_TB,
 	                            CE => CE_TB,
 								reset => reset_TB,
 								entree => entree_TB,
@@ -54,7 +54,7 @@ begin
 		reset_TB <= '1';
 		wait for 10 ns;
 		reset_TB <= '0';
-		wait for 10 ms;
+		wait for 100 ms;
 	end process;
 	
 	SMT : process

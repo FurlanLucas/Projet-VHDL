@@ -19,7 +19,7 @@ end entity;
 architecture mux8_arch of mux8 is
 begin
 
-	process(command_entree)
+	process(command_entree,E0_entree,E1_entree,E2_entree,E3_entree,E4_entree,E5_entree,E6_entree,E7_entree)
 	begin 
 		case command_entree is
 			when "000" => S_sortie <= E0_entree;

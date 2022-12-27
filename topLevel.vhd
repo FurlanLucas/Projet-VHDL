@@ -13,7 +13,10 @@ entity topLevel is
          SS : out std_logic;
          
          anode : out std_logic_vector(7 downto 0);
-         affch : out std_logic_vector(6 downto 0));
+         affch : out std_logic_vector(6 downto 0);
+		 led   : out std_logic_vector(11 downto 0);
+		 
+		 test : out std_logic);
 end topLevel;
 
 architecture Behavioral of topLevel is
@@ -32,9 +35,13 @@ architecture Behavioral of topLevel is
     signal aff6                     : std_logic_vector(6 downto 0);
     signal aff7                     : std_logic_vector(6 downto 0);
     signal CE_aff                   : std_logic;
+    signal CE_input                 : std_logic;
+    signal SPI_CLK                  : std_logic;
     signal ACCEL_MAG_OUT_TL_FILTRE  : std_logic_vector (11 downto 0);
+    signal ACCEL_MAG_OUT_TL_FILTRE2 : std_logic_vector (11 downto 0);
     signal ACCEL_TMP_OUT_TL_FILTRE  : std_logic_vector (11 downto 0);
     signal compteur_val             : std_logic_vector (13 downto 0);
+    --signal test                     : std_logic;
     
     component AccelerometerCtl
         generic(
@@ -89,6 +96,12 @@ architecture Behavioral of topLevel is
              CE    : out std_logic);
     end component;
     
+    component ges_freq2 is
+        port(CLK   : in std_logic;
+             RESET : in std_logic;
+             CE    : out std_logic);
+    end component;
+    
     component filtre 
         port(entree  : in  std_logic_vector(11 downto 0);
              sortie : out std_logic_vector(11 downto 0));
@@ -106,18 +119,29 @@ architecture Behavioral of topLevel is
              sortie_dez_temp    : out std_logic_vector(6 downto 0);
              sortie_C           : out std_logic_vector(6 downto 0));
     end component;
-
-    component peakDetector is
+    
+    component windowing is
         port(CLK    : in std_logic;
+             CE     : in std_logic;
+             reset  : in std_logic;
              entree : in std_logic_vector(11 downto 0);
-             sortie: out std_logic_vector(13 downto 0));
+             sortie : out std_logic_vector(11 downto 0);
+             test   : out std_logic);
     end component;
+    
+--    component peakDetector is
+--        port(CLK    : in std_logic;
+--             CE     : in std_logic;
+--             reset  : in std_logic;
+--             entree : in std_logic_vector(11 downto 0);
+--             sortie : out std_logic_vector(13 downto 0));
+--    end component;
  
 begin    
     
     AccelerometerCtl_DUT : AccelerometerCtl port map(SYSCLK => CLK,
                                                      RESET => RESET,
-                                                     SCLK => CLK_SPI,
+                                                     SCLK => SPI_CLK,
                                                      MOSI => MOSI,
                                                      MISO => MISO,
                                                      SS => SS,
@@ -147,6 +171,10 @@ begin
     ges_freq_DUT : ges_freq port map(CLK       => CLK,
                                      RESET           => RESET,
                                      CE => CE_aff);
+                                     
+    ges_freq2_DUT : ges_freq2 port map(CLK    => SPI_CLK,
+                                       RESET  => RESET,
+                                       CE     => CE_input);                                 
                     
     transcodeur_DUT : transcodeur port map(compteur_valeur => compteur_val,  
                                            temperature_valeur => ACCEL_MAG_OUT_TL_FILTRE,
@@ -160,14 +188,37 @@ begin
                                            sortie_C           => aff0);
                                      
     filtre_1_DUT : filtre port map(entree => ACCEL_MAG_OUT_TL,
-                                  sortie => ACCEL_MAG_OUT_TL_FILTRE);
+                                   sortie => ACCEL_MAG_OUT_TL_FILTRE);
                                 
     filtre_2_DUT : filtre port map(entree => ACCEL_TMP_OUT_TL,
-                                  sortie => ACCEL_TMP_OUT_TL_FILTRE);
+                                   sortie => ACCEL_TMP_OUT_TL_FILTRE);
                                   
-    peakDetector_DUT : peakDetector port map(CLK    => CLK,
-                                             entree => ACCEL_MAG_OUT_TL_FILTRE,
-                                             sortie => compteur_val);
- 
-                                  
+--    peakDetector_DUT : peakDetector port map(CLK    => CLK,
+--                                             CE => test,
+--                                             reset => RESET,
+--                                             entree => ACCEL_MAG_OUT_TL_FILTRE2,
+--                                             sortie => open); 
+--           
+    windowing_DUT : windowing port map(CLK    => CLK,
+                                       CE => CE_input,
+                                       reset => RESET,
+                                       entree => ACCEL_MAG_OUT_TL_FILTRE,
+                                       sortie => ACCEL_MAG_OUT_TL_FILTRE2,
+                                       test => test);                                                                              
+    
+    process(RESET)
+    begin
+        if (RESET = '0') then
+	       led <= std_logic_vector(ACCEL_MAG_OUT_TL_FILTRE);
+	       --LED_test <= test;	       
+	    else
+	       led <= "000000000000";	       
+	    end if;
+	    CLK_SPI <= SPI_CLK;
+	end process;
+	
+	--led <= std_logic_vector(compteur_val);
+	--test <= CE_input;
+	compteur_val <= "00" & std_logic_vector(ACCEL_MAG_OUT_TL_FILTRE2);
+       
 end architecture;                            
