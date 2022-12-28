@@ -16,9 +16,10 @@ end entity;
 architecture windowing_arch of windowing is
 	
 	-- Constants
-	constant WindowWidth  : integer := 262144;
-	constant WindowWidth2 : integer := 131072;
-	constant WindowBits   : integer := 18;
+	constant WindowWidth2  : integer := 262144;
+	--constant WindowWidth2 : integer := 131072;
+	constant WindowWidth : integer := 524288;
+	constant WindowBits   : integer := 19;
 	
 	-- Signal declaration
     signal counter_fenetre : unsigned(WindowBits-1 downto 0)          := to_unsigned(WindowWidth-1, WindowBits);
@@ -45,7 +46,7 @@ begin
                 elsif (counter_fenetre = to_unsigned(WindowWidth2-1, WindowBits)) then 
                     test <= '1';
                 else
-                    buff <= buff + ("000000" + unsigned(entree));
+                    buff <= buff + (to_unsigned(0, WindowBits) + unsigned(entree));
                 end if;   
                 counter_fenetre <= counter_fenetre + 1;                 
                 -----------------------------------------------------------------------------------

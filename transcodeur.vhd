@@ -5,15 +5,15 @@ use ieee.std_logic_unsigned.all;
 
 entity transcodeur is
 	port(compteur_valeur    : in  std_logic_vector(13 downto 0);
-		 temperature_valeur : in  std_logic_vector(11 downto 0);
-		 sortie_rien        : out std_logic_vector(6 downto 0);
+		 mod_valeur         : in  std_logic_vector(11 downto 0);
 		 sortie_uni_comp    : out std_logic_vector(6 downto 0);
 		 sortie_dez_comp    : out std_logic_vector(6 downto 0);
 		 sortie_cen_comp    : out std_logic_vector(6 downto 0);
 		 sortie_mil_comp    : out std_logic_vector(6 downto 0);
-		 sortie_uni_temp    : out std_logic_vector(6 downto 0);
-		 sortie_dez_temp    : out std_logic_vector(6 downto 0);
-		 sortie_C           : out std_logic_vector(6 downto 0));
+		 sortie_uni_mod     : out std_logic_vector(6 downto 0);
+		 sortie_dez_mod     : out std_logic_vector(6 downto 0);
+		 sortie_cen_mod     : out std_logic_vector(6 downto 0);
+		 sortie_mil_mod     : out std_logic_vector(6 downto 0));
 end entity;
 
 architecture transcodeur_arch of transcodeur is
@@ -28,8 +28,10 @@ architecture transcodeur_arch of transcodeur is
 	signal comp_cen : std_logic_vector(3 downto 0)  := "0000";
 	signal comp_mil : std_logic_vector(3 downto 0)  := "0000";
 	
-	signal temp_uni : std_logic_vector(11 downto 0) := "000000000000";
-	signal temp_dez : std_logic_vector(3 downto 0) := "0000";
+	signal mod_uni : std_logic_vector(11 downto 0) := "000000000000";
+	signal mod_dez : std_logic_vector(3 downto 0)  := "0000";
+	signal mod_cen : std_logic_vector(3 downto 0)  := "0000";
+	signal mod_mil : std_logic_vector(3 downto 0)  := "0000";
 	
 begin
 
@@ -45,15 +47,19 @@ begin
 	COMP_MIL_DUT : transcodeurUnit port map(entree => comp_mil,
 										    sortie => sortie_mil_comp);
 
-	TEMP_UNI_DUT : transcodeurUnit port map(entree => temp_uni(3 downto 0),
-										    sortie => sortie_uni_temp);
+	TEMP_UNI_DUT : transcodeurUnit port map(entree => mod_uni(3 downto 0),
+										    sortie => sortie_uni_mod);
 	
-	TEMP_DEZ_DUT : transcodeurUnit port map(entree => temp_dez,
-										    sortie => sortie_dez_temp);
-											
-	sortie_C <= "1000110";
-	sortie_rien <= "1111111";
-											
+	TEMP_DEZ_DUT : transcodeurUnit port map(entree => mod_dez,
+										    sortie => sortie_dez_mod);
+										    
+	TEMP_CEN_DUT : transcodeurUnit port map(entree => mod_cen,
+										    sortie => sortie_cen_mod);
+										    										
+	TEMP_MIL_DUT : transcodeurUnit port map(entree => mod_mil,
+										    sortie => sortie_mil_mod);
+										    
+										    										
 	process(compteur_valeur)
 		variable sobra    : std_logic_vector(13 downto 0);
 	begin
@@ -158,39 +164,106 @@ begin
 		 
 	end process;
 	
-	process(temperature_valeur)
-	begin	
-		-- Take the first and second digits
-        if (unsigned(temperature_valeur) < 10) then
-            temp_uni <= temperature_valeur;
-            temp_dez <= "0000";
-        elsif (unsigned(temperature_valeur) < 20) then
-            temp_uni <= temperature_valeur - 10;
-            temp_dez <= "0001";
-        elsif (unsigned(temperature_valeur) < 30) then
-            temp_uni <= temperature_valeur - 20;
-            temp_dez <= "0010";
-        elsif (unsigned(temperature_valeur) < 40) then
-            temp_uni <= temperature_valeur - 30;
-            temp_dez <= "0011";
-        elsif (unsigned(temperature_valeur) < 50) then
-            temp_uni <= temperature_valeur - 40;
-            temp_dez <= "0100";
-        elsif (unsigned(temperature_valeur) < 60) then
-            temp_uni <= temperature_valeur - 50;
-            temp_dez <= "0101";
-        elsif (unsigned(temperature_valeur) < 70) then
-            temp_uni <= temperature_valeur - 60;
-            temp_dez <= "0110";
-		elsif (unsigned(temperature_valeur) < 80) then
-            temp_uni <= temperature_valeur - 70;
-            temp_dez <= "0111";
-		elsif (unsigned(temperature_valeur) < 90) then
-            temp_uni <= temperature_valeur - 80;
-            temp_dez <= "1000";
-		elsif (unsigned(temperature_valeur) < 100) then
-            temp_uni <= temperature_valeur - 90;
-            temp_dez <= "1001";
+	process(mod_valeur)
+		variable sobra2    : std_logic_vector(11 downto 0);
+	begin
+	     
+        -- Take the first digit
+        if (unsigned(mod_valeur) < 1000) then
+            sobra2 := mod_valeur;
+            mod_mil <= "0000";
+        elsif (unsigned(mod_valeur) < 2000) then
+            sobra2 := mod_valeur - 1000;
+            mod_mil <= "0001";
+        elsif (unsigned(mod_valeur) < 3000) then
+            sobra2 := mod_valeur - 2000;
+            mod_mil <= "0010";
+        elsif (unsigned(mod_valeur) < 4000) then
+            sobra2 := mod_valeur - 3000;
+            mod_mil <= "0011";
+        elsif (unsigned(mod_valeur) < 5000) then
+            sobra2 := mod_valeur - 4000;
+            mod_mil <= "0100";
+        elsif (unsigned(mod_valeur) < 6000) then
+            sobra2 := mod_valeur - 5000;
+            mod_mil <= "0101";
+        elsif (unsigned(mod_valeur) < 7000) then
+            sobra2 := mod_valeur - 6000;
+            mod_mil <= "0110";
+		elsif (unsigned(mod_valeur) < 8000) then
+            sobra2 := mod_valeur - 7000;
+            mod_mil <= "0111";
+		elsif (unsigned(mod_valeur) < 9000) then
+            sobra2 := mod_valeur - 8000;
+            mod_mil <= "1000";
+		elsif (unsigned(mod_valeur) < 10000) then
+            sobra2 := mod_valeur - 9000;
+            mod_mil <= "1001";
+        end if;
+		
+		-- Take the second digit
+        if (unsigned(sobra2) < 100) then
+            mod_cen <= "0000";
+        elsif (unsigned(sobra2) < 200) then
+            sobra2 := sobra2 - 100;
+            mod_cen <= "0001";
+        elsif (unsigned(sobra2) < 300) then
+            sobra2 := sobra2 - 200;
+            mod_cen <= "0010";
+        elsif (unsigned(sobra2) < 400) then
+            sobra2 := sobra2 - 300;
+            mod_cen <= "0011";
+        elsif (unsigned(sobra2) < 500) then
+            sobra2 := sobra2 - 400;
+            mod_cen <= "0100";
+        elsif (unsigned(sobra2) < 600) then
+            sobra2 := sobra2 - 500;
+            mod_cen <= "0101";
+        elsif (unsigned(sobra2) < 700) then
+            sobra2 := sobra2 - 600;
+            mod_cen <= "0110";
+		elsif (unsigned(sobra2) < 800) then
+            sobra2 := sobra2 - 700;
+            mod_cen <= "0111";
+		elsif (unsigned(sobra2) < 900) then
+            sobra2 := sobra2 - 800;
+            mod_cen <= "1000";
+		elsif (unsigned(sobra2) < 1000) then
+           sobra2 := sobra2 - 900;
+           mod_cen <= "1001";
+        end if;
+		
+		-- Take the third and fourth digits
+        if (unsigned(sobra2) < 10) then
+            mod_uni <= sobra2;
+            mod_dez <= "0000";
+        elsif (unsigned(sobra2) < 20) then
+            mod_uni <= sobra2 - 10;
+            mod_dez <= "0001";
+        elsif (unsigned(sobra2) < 30) then
+            mod_uni <= sobra2 - 20;
+            mod_dez <= "0010";
+        elsif (unsigned(sobra2) < 40) then
+            mod_uni <= sobra2 - 30;
+            mod_dez <= "0011";
+        elsif (unsigned(sobra2) < 50) then
+            mod_uni <= sobra2 - 40;
+            mod_dez <= "0100";
+        elsif (unsigned(sobra2) < 60) then
+            mod_uni <= sobra2 - 50;
+            mod_dez <= "0101";
+        elsif (unsigned(sobra2) < 70) then
+            mod_uni <= sobra2 - 60;
+            mod_dez <= "0110";
+		elsif (unsigned(sobra2) < 80) then
+            mod_uni <= sobra2 - 70;
+            mod_dez <= "0111";
+		elsif (unsigned(sobra2) < 90) then
+            mod_uni <= sobra2 - 80;
+            mod_dez <= "1000";
+		elsif (unsigned(sobra2) < 100) then
+            mod_uni <= sobra2 - 90;
+            mod_dez <= "1001";
         end if;
 		 
 	end process;
