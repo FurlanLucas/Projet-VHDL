@@ -18,7 +18,7 @@ architecture mod8_arch of mod8 is
 	
 begin
 	
-	process(clk_entree)
+	process(clk_entree, reset)
 		variable buf_aux : std_logic; -- Buffer auxiliary variable
 	begin 
 	
