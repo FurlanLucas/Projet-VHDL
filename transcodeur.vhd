@@ -67,7 +67,7 @@ begin
         -- Take the first digit
         if (unsigned(compteur_valeur) < 1000) then
             sobra := compteur_valeur;
-            comp_mil <= "0000";
+            comp_mil <= "1111";
         elsif (unsigned(compteur_valeur) < 2000) then
             sobra := compteur_valeur - 1000;
             comp_mil <= "0001";
@@ -99,7 +99,11 @@ begin
 		
 		-- Take the second digit
         if (unsigned(sobra) < 100) then
-            comp_cen <= "0000";
+            if (unsigned(compteur_valeur) < 1000) then
+                comp_cen <= "1111";
+            else
+                comp_cen <= "0000";
+            end if;
         elsif (unsigned(sobra) < 200) then
             sobra := sobra - 100;
             comp_cen <= "0001";
@@ -132,7 +136,11 @@ begin
 		-- Take the third and fourth digits
         if (unsigned(sobra) < 10) then
             comp_uni <= sobra;
-            comp_dez <= "0000";
+            if (unsigned(compteur_valeur) < 100) then
+                comp_dez <= "1111";
+            else
+                comp_dez <= "0000";
+            end if;
         elsif (unsigned(sobra) < 20) then
             comp_uni <= sobra - 10;
             comp_dez <= "0001";
@@ -171,7 +179,7 @@ begin
         -- Take the first digit
         if (unsigned(mod_valeur) < 1000) then
             sobra2 := mod_valeur;
-            mod_mil <= "0000";
+            mod_mil <= "1111";
         elsif (unsigned(mod_valeur) < 2000) then
             sobra2 := mod_valeur - 1000;
             mod_mil <= "0001";
@@ -203,7 +211,11 @@ begin
 		
 		-- Take the second digit
         if (unsigned(sobra2) < 100) then
-            mod_cen <= "0000";
+            if (unsigned(mod_valeur) < 1000) then
+                mod_cen <= "1111";
+            else
+                mod_cen <= "0000";
+            end if;
         elsif (unsigned(sobra2) < 200) then
             sobra2 := sobra2 - 100;
             mod_cen <= "0001";
@@ -236,7 +248,11 @@ begin
 		-- Take the third and fourth digits
         if (unsigned(sobra2) < 10) then
             mod_uni <= sobra2;
-            mod_dez <= "0000";
+            if (unsigned(mod_valeur) < 100) then
+                mod_dez <= "1111";
+            else
+                mod_dez <= "0000";
+            end if;
         elsif (unsigned(sobra2) < 20) then
             mod_uni <= sobra2 - 10;
             mod_dez <= "0001";

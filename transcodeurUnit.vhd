@@ -43,6 +43,9 @@ begin
 			-- AA, AB, AC, AD, AF, AG, on (entree = 9)
 			when "1001" => sortie <= "0010000";
 			
+			-- All off (nothing)
+			when "1111" => sortie <= "1111111";
+			
 			-- Other cases
 			when others => sortie <= "1111111";
 		end case;

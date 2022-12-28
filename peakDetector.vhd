@@ -17,7 +17,7 @@ architecture peakDetector_arch of peakDetector is
 	-- Constants
 	constant peakValue  : integer := 175;
 	-- Signal declaration
-    signal buff     : unsigned(13 downto 0) := to_unsigned(0, 14);   
+    signal buff     : unsigned(14 downto 0) := to_unsigned(0, 15);   
     signal CE_P     : std_logic := '0';
 
 begin
@@ -28,7 +28,7 @@ begin
         -- Asynchronous reset
         if (reset = '1') then
             sortie <= std_logic_vector(to_unsigned(0, 14));
-            buff <= to_unsigned(0, 14);
+            buff <= to_unsigned(0, 15);
             
         -- Check for clock change --------------------------
         elsif (CLK'event) and (CLK = '1') then  
@@ -42,7 +42,7 @@ begin
             ----------------------------------------------------------- 
             
             CE_P <= CE;
-            sortie <= std_logic_vector(buff);
+            sortie <= std_logic_vector(buff(14 downto 1));
         end if;   
         -----------------------------------------------------
         
