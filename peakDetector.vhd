@@ -5,6 +5,7 @@ use ieee.std_logic_unsigned.all;
 
 entity peakDetector is
     port(CLK    : in std_logic;
+         CE     : in std_logic;
 		 reset  : in std_logic;
          entree : in std_logic_vector(11 downto 0);
          sortie : out std_logic_vector(13 downto 0));
@@ -13,51 +14,38 @@ end entity;
 
 architecture peakDetector_arch of peakDetector is
 	
-	constant WindowWidth : integer := 16;
-	constant WindowWidthBits : integer := 4;
-	constant bruitAmplitude : unsigned(11 downto 0) := to_unsigned(0, 12);
-	
-    signal buff : unsigned(11+WindowWidthBits downto 0) := to_unsigned(0, 12+WindowWidthBits);
-    signal moyenne : unsigned(11 downto 0);
-    signal moyenne_precedente : unsigned(11 downto 0);
-    signal moyenne_precedente2 : unsigned(11 downto 0);
-    signal counter_fenetre : unsigned(WindowWidthBits-1 downto 0) := 
-	                                      to_unsigned(WindowWidth-1, WindowWidthBits);
-    signal buff_out : unsigned(13 downto 0) := to_unsigned(0, 14);
-    
-    	
-	
+	-- Constants
+	constant peakValue  : integer := 175;
+	-- Signal declaration
+    signal buff     : unsigned(13 downto 0) := to_unsigned(0, 14);   
+    signal CE_P     : std_logic := '0';
 
 begin
-
-    process(entree)
-    begin
-		if (reset = '0') then
-			buff <= buff + (to_unsigned(0,WindowWidthBits) & unsigned(entree));
-			
-			if (counter_fenetre = to_unsigned(WindowWidth-1,WindowWidthBits)) then
-				counter_fenetre <= to_unsigned(0,WindowWidthBits);
-				moyenne <= buff(11+WindowWidthBits downto WindowWidthBits);
-				buff <= (to_unsigned(0,WindowWidthBits) & unsigned(entree));
-			else 
-				counter_fenetre <= counter_fenetre + 1;
-			end if;
-		end if;
-		
-    end process;
     
-    process(moyenne)
-    begin
-	
-        if(moyenne < moyenne_precedente - bruitAmplitude) and (moyenne_precedente > moyenne_precedente2 + bruitAmplitude) then
-            buff_out <= buff_out + 1;
+    -- Counter process
+    process(CLK, reset, CE)
+    begin       
+        -- Asynchronous reset
+        if (reset = '1') then
+            sortie <= std_logic_vector(to_unsigned(0, 14));
+            buff <= to_unsigned(0, 14);
             
-        end if;
-        moyenne_precedente <= moyenne;
-        moyenne_precedente2 <= moyenne_precedente;
-		
+        -- Check for clock change --------------------------
+        elsif (CLK'event) and (CLK = '1') then  
+                    
+            -- Check for new change --------------------------------
+            if (CE = '1') and (CE_P = '0') then -- If there is some input change                
+                if (entree > std_logic_vector(to_unsigned(peakValue, 11))) then -- Check for a peak  
+                    buff <= buff + 1;        
+                end if;   
+            end if;            
+            ----------------------------------------------------------- 
+            
+            CE_P <= CE;
+            sortie <= std_logic_vector(buff);
+        end if;   
+        -----------------------------------------------------
+        
     end process;
-
-    sortie <= std_logic_vector(buff_out);
     
 end architecture;
