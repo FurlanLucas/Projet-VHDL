@@ -9,7 +9,7 @@ entity windowing is
 		 reset  : in std_logic;
          entree : in std_logic_vector(11 downto 0);
          sortie : out std_logic_vector(11 downto 0);
-         test : out std_logic);
+         CE_windowing : out std_logic);
 end entity;
 
 
@@ -40,11 +40,11 @@ begin
             if (CE = '1') then -- If there is some input change
                 -- Check if it is the window's end ------------------------------------------------
                 if (counter_fenetre = to_unsigned(WindowWidth-1, WindowBits)) then      
-                    test <= '0';        
+                    CE_windowing <= '0';        
                     sortie <= std_logic_vector(buff(WindowBits+11 downto WindowBits));
                     buff <= to_unsigned(0, WindowBits+12);
                 elsif (counter_fenetre = to_unsigned(WindowWidth2-1, WindowBits)) then 
-                    test <= '1';
+                    CE_windowing <= '1';
                 else
                     buff <= buff + (to_unsigned(0, WindowBits) + unsigned(entree));
                 end if;   
