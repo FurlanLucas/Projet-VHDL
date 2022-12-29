@@ -17,7 +17,6 @@ architecture windowing_arch of windowing is
 	
 	-- Constants
 	constant WindowWidth2  : integer := 262144;
-	--constant WindowWidth2 : integer := 131072;
 	constant WindowWidth : integer := 524288;
 	constant WindowBits   : integer := 19;
 	

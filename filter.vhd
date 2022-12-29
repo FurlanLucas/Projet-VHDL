@@ -5,7 +5,9 @@ use ieee.std_logic_unsigned.all;
 
 
 entity filter is
-    port(entree  : in  std_logic_vector(11 downto 0);
+    port(CLK : in std_logic;
+         CE : in std_logic;
+         entree  : in  std_logic_vector(11 downto 0);
          sortie : out std_logic_vector(11 downto 0));
 end entity;
 
@@ -33,8 +35,12 @@ architecture filter_arch of filter is
     
 begin
 
-    process(entree)
+    process(CLK)
     begin
+        
+        if (CLK'event) and (CLK = '1') and (CE = '1') then
+        
+            -- Update the previous values ---------------------------
             mag01 <= entree;
             mag02 <= mag01;
             mag03 <= mag02;
@@ -50,7 +56,9 @@ begin
             mag13 <= mag12;
             mag14 <= mag13;
             mag15 <= mag14;
-                       
+            ---------------------------------------------------------
+            
+            -- Sum the previous values to take the mean       
             buf <= (to_unsigned(0, DataWidth-11) & unsigned(entree)) + 
 			       (to_unsigned(0, DataWidth-11) & unsigned(mag01)) +
 			       (to_unsigned(0, DataWidth-11) & unsigned(mag02)) + 
@@ -66,9 +74,12 @@ begin
 			       (to_unsigned(0, DataWidth-11) & unsigned(mag12)) +
 				   (to_unsigned(0, DataWidth-11) & unsigned(mag13)) +
 			       (to_unsigned(0, DataWidth-11) & unsigned(mag14)) +
-				   (to_unsigned(0, DataWidth-11) & unsigned(mag15));
+				   (to_unsigned(0, DataWidth-11) & unsigned(mag15));            
+            ---------------------------------------------------------
             
-            sortie <= std_logic_vector(buf(DataWidth downto 4));
+        end if;
+        
+        sortie <= std_logic_vector(buf(DataWidth downto 4));
         
     end process;
 
