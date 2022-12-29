@@ -4,13 +4,13 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
 
-entity filtre is
+entity filter is
     port(entree  : in  std_logic_vector(11 downto 0);
          sortie : out std_logic_vector(11 downto 0));
 end entity;
 
 
-architecture filtre_arch of filtre is
+architecture filter_arch of filter is
 
 	constant DataWidth : integer := 15;
 	
