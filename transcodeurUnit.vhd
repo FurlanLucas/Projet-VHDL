@@ -1,3 +1,19 @@
+-- Transcorder module that takes a number from 0 to 9 and returns
+-- the vector that describes the 7 segments dysplay inputs (cathodes).
+-- The above diagram shows the position of each segments, with the output
+-- vector beeing [CG, CF, CE, CD, CC, CB, CA], activated low.
+--
+--
+--       CA
+--      ---  
+--  CF |   | CB
+--      ---      <- CG
+--  CE |   | CC
+--      ---  .
+--       CD
+--
+--  Decimal Point = CP
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -42,9 +58,6 @@ begin
 			
 			-- AA, AB, AC, AD, AF, AG, on (entree = 9)
 			when "1001" => sortie <= "0010000";
-			
-			-- All off (nothing)
-			when "1111" => sortie <= "1111111";
 			
 			-- Other cases
 			when others => sortie <= "1111111";
