@@ -4,13 +4,13 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
 
-entity ges_freq2 is
+entity ges_enable is
     port(CLK   : in std_logic;
          RESET : in std_logic;
          CE    : out std_logic);
 end entity;
 
-architecture ges_freq2_arch of ges_freq2 is
+architecture ges_enable_arch of ges_enable is
 
         signal buff : unsigned(4 downto 0);
         signal CE_buff : std_logic := '0';
