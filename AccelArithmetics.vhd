@@ -234,8 +234,15 @@ Magnitude_Calculation : Square_Root
     m_axis_dout_tvalid => open,
     m_axis_dout_tdata => m_axis_dout_tdata
   );
-  
- ACCEL_MAG_SQRT <= m_axis_dout_tdata (13 downto 0);
+
+magOUT : process(SYSCLK, RESET)
+begin 
+    if (RESET = '0') then
+        ACCEL_MAG_SQRT <= m_axis_dout_tdata (13 downto 0);
+    else
+        ACCEL_MAG_SQRT <= "00000000000000";
+    end if;
+end process;
 
 -- Also divide the square root by 4
 ACCEL_MAG_OUT <= ACCEL_MAG_SQRT(13 downto 2);
