@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
-entity peakDetector is
+entity peakDetector1 is
     port(CLK    : in std_logic;
          CE     : in std_logic;
 		 reset  : in std_logic;
@@ -12,7 +12,7 @@ entity peakDetector is
 end entity;
 
 
-architecture peakDetector_arch of peakDetector is
+architecture peakDetector1_arch of peakDetector1 is
 	
 	-- Constants
 	constant peakValue  : integer := 175;
