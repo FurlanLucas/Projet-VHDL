@@ -8,42 +8,42 @@ end entity;
 
 architecture transcodeur_TB_arch of transcodeur_TB is
     
-    signal compteur_valeur_TB    : std_logic_vector(13 downto 0);
-    signal temperature_valeur_TB : std_logic_vector(11 downto 0);
-    signal sortie_rien_TB        : std_logic_vector(6 downto 0);
-    signal sortie_uni_comp_TB    : std_logic_vector(6 downto 0);
-    signal sortie_dez_comp_TB    : std_logic_vector(6 downto 0);
-	signal sortie_cen_comp_TB    : std_logic_vector(6 downto 0);
-    signal sortie_mil_comp_TB    : std_logic_vector(6 downto 0);
-    signal sortie_uni_temp_TB    : std_logic_vector(6 downto 0);
-    signal sortie_dez_temp_TB    : std_logic_vector(6 downto 0);
-    signal sortie_C_TB           : std_logic_vector(6 downto 0);
+    signal compteur_valeur_TB : std_logic_vector(13 downto 0);
+    signal mod_valeur_TB      : std_logic_vector(11 downto 0);
+    signal sortie_uni_comp_TB : std_logic_vector(6 downto 0);
+    signal sortie_dez_comp_TB : std_logic_vector(6 downto 0);
+    signal sortie_cen_comp_TB : std_logic_vector(6 downto 0);
+    signal sortie_mil_comp_TB : std_logic_vector(6 downto 0);
+    signal sortie_uni_mod_TB  : std_logic_vector(6 downto 0);
+    signal sortie_dez_mod_TB  : std_logic_vector(6 downto 0);
+    signal sortie_cen_mod_TB  : std_logic_vector(6 downto 0);
+    signal sortie_mil_mod_TB  : std_logic_vector(6 downto 0);
     
     component transcodeur
-        port(compteur_valeur    : in  std_logic_vector(13 downto 0);
-             temperature_valeur : in  std_logic_vector(11 downto 0);
-             sortie_rien        : out std_logic_vector(6 downto 0);
-             sortie_uni_comp    : out std_logic_vector(6 downto 0);
-             sortie_dez_comp    : out std_logic_vector(6 downto 0);
-			 sortie_cen_comp    : out std_logic_vector(6 downto 0);
-             sortie_mil_comp    : out std_logic_vector(6 downto 0);
-             sortie_uni_temp    : out std_logic_vector(6 downto 0);
-             sortie_dez_temp    : out std_logic_vector(6 downto 0);
-             sortie_C           : out std_logic_vector(6 downto 0));
+        port(compteur_valeur : in  std_logic_vector(13 downto 0);
+             mod_valeur      : in  std_logic_vector(11 downto 0);
+		     sortie_uni_comp : out std_logic_vector(6 downto 0);
+		     sortie_dez_comp : out std_logic_vector(6 downto 0);
+		     sortie_cen_comp : out std_logic_vector(6 downto 0);
+		     sortie_mil_comp : out std_logic_vector(6 downto 0);
+		     sortie_uni_mod  : out std_logic_vector(6 downto 0);
+		     sortie_dez_mod  : out std_logic_vector(6 downto 0);
+		     sortie_cen_mod  : out std_logic_vector(6 downto 0);
+		     sortie_mil_mod  : out std_logic_vector(6 downto 0));
 	end component;	 
 	
 begin
  
     DUT1 : transcodeur port map(compteur_valeur => compteur_valeur_TB,
-                                temperature_valeur => temperature_valeur_TB,
-                                sortie_rien => sortie_rien_TB,
+                                mod_valeur => mod_valeur_TB,
                                 sortie_uni_comp => sortie_uni_comp_TB,
                                 sortie_dez_comp => sortie_dez_comp_TB,
 								sortie_cen_comp => sortie_cen_comp_TB,
                                 sortie_mil_comp => sortie_mil_comp_TB,
-                                sortie_uni_temp => sortie_uni_temp_TB,
-                                sortie_dez_temp => sortie_dez_temp_TB,
-                                sortie_C => sortie_C_TB);
+                                sortie_uni_mod => sortie_uni_mod_TB,
+                                sortie_dez_mod => sortie_dez_mod_TB,
+								sortie_cen_mod => sortie_cen_mod_TB,
+                                sortie_mil_mod => sortie_mil_mod_TB);
       
     SIM1 : process
     begin
@@ -148,63 +148,65 @@ begin
 	SIM2 : process
     begin
     
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(0, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(0, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(1, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(1, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(2, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(2, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(3, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(3, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(4, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(4, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(5, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(5, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(6, 12)); 
+        mod_valeur_TB <= std_logic_vector(to_unsigned(6, 12)); 
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(7, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(7, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(8, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(8, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(9, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(9, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(10, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(10, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(11, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(11, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(12, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(12, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(13, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(13, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(14, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(14, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(15, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(15, 12));
         wait for 20 ns;
-		temperature_valeur_TB <= std_logic_vector(to_unsigned(16, 12));
+		mod_valeur_TB <= std_logic_vector(to_unsigned(16, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(17, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(17, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(18, 12)); 
+        mod_valeur_TB <= std_logic_vector(to_unsigned(18, 12)); 
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(19, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(19, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(20, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(20, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(30, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(30, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(40, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(40, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(50, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(50, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(60, 12)); 
+        mod_valeur_TB <= std_logic_vector(to_unsigned(60, 12)); 
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(70, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(70, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(80, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(80, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(90, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(90, 12));
         wait for 20 ns;
-        temperature_valeur_TB <= std_logic_vector(to_unsigned(99, 12));
+        mod_valeur_TB <= std_logic_vector(to_unsigned(99, 12));
+        wait for 20 ns;
+        mod_valeur_TB <= std_logic_vector(to_unsigned(0, 12));
         wait for 20 ns;
        
     end process;

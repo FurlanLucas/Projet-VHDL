@@ -63,6 +63,10 @@ begin
 		entree_TB <= "1001";
 		wait for 5 ns;
 		
+		-- Others
+		entree_TB <= "1111";
+		wait for 5 ns;
+		
 	end process;
 	
 end architecture;
