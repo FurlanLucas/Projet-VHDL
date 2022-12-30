@@ -9,20 +9,20 @@ end entity;
 architecture windowing_TB_arch of windowing_TB is
 
 	component windowing
-		port(CLK    : in std_logic;
-		     CE     : in std_logic;
-			 reset  : in std_logic;
-			 entree : in std_logic_vector(11 downto 0);
-			 sortie: out std_logic_vector(11 downto 0);
-			 test : out std_logic);
+		port(CLK          : in std_logic;
+             CE           : in std_logic;
+		     reset        : in std_logic;
+             entree       : in std_logic_vector(11 downto 0);
+             sortie       : out std_logic_vector(11 downto 0);
+             CE_windowing : out std_logic);
 	end component;
 	
-	signal CLK_TB    : std_logic;
-	signal CE_TB     : std_logic;
-	signal reset_TB  : std_logic;
- 	signal entree_TB : std_logic_vector(11 downto 0);
-	signal sortie_TB : std_logic_vector(11 downto 0);
-	signal test_TB :  std_logic;
+	signal CLK_TB          : std_logic;
+	signal CE_TB           : std_logic;
+	signal reset_TB        : std_logic;
+ 	signal entree_TB       : std_logic_vector(11 downto 0);
+	signal sortie_TB       : std_logic_vector(11 downto 0);
+	signal CE_windowing_TB :  std_logic;
 	
 begin
 
@@ -31,7 +31,7 @@ begin
 								reset => reset_TB,
 								entree => entree_TB,
 								sortie => sortie_TB,
-								test => test_TB);
+								CE_windowing => CE_windowing_TB);
 				
 	CLK : process
 	begin
@@ -54,7 +54,7 @@ begin
 		reset_TB <= '1';
 		wait for 10 ns;
 		reset_TB <= '0';
-		wait for 100 ms;
+		wait for 2000 ms;
 	end process;
 	
 	SMT : process

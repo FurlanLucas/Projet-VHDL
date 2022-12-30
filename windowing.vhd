@@ -4,11 +4,11 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
 entity windowing is
-    port(CLK    : in std_logic;
-         CE     : in std_logic;
-		 reset  : in std_logic;
-         entree : in std_logic_vector(11 downto 0);
-         sortie : out std_logic_vector(11 downto 0);
+    port(CLK          : in std_logic;
+         CE           : in std_logic;
+		 reset        : in std_logic;
+         entree       : in std_logic_vector(11 downto 0);
+         sortie       : out std_logic_vector(11 downto 0);
          CE_windowing : out std_logic);
 end entity;
 
@@ -33,6 +33,7 @@ begin
         if (reset = '1') then
             sortie <= std_logic_vector(to_unsigned(0, 12));
             counter_fenetre <= to_unsigned(0, WindowBits);
+            CE_windowing <= '0';
             
         elsif (CLK'event) and (CLK = '1') then              
             -- Check for new change --------------------------------
