@@ -94,9 +94,10 @@ architecture Behavioral of topLevel is
     end component;
     
     component filter is -- Filter that takes the mean value for a number of successive input values
-        port(CLK : in std_logic;
-             CE : in std_logic;
-             entree  : in  std_logic_vector(11 downto 0);
+        port(CLK    : in std_logic;
+             RESET  : in std_logic;
+             CE     : in std_logic;
+             entree : in  std_logic_vector(11 downto 0);
              sortie : out std_logic_vector(11 downto 0));
     end component;
 
@@ -183,6 +184,7 @@ begin
                                            sortie_mil_mod    => aff3);
                                      
     filter_DUT : filter port map(CLK => CLK,
+                                 RESET => RESET,
                                  CE => CE_input,
                                  entree => accel_mod,
                                  sortie => accel_mod_filtered);                               
