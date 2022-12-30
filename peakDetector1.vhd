@@ -15,7 +15,7 @@ end entity;
 architecture peakDetector1_arch of peakDetector1 is
 	
 	-- Constants
-	constant peakValue  : integer := 175;
+	constant peakValue  : integer := 199;
 	-- Signal declaration
     signal buff     : unsigned(14 downto 0) := to_unsigned(0, 15);   
     signal CE_P     : std_logic := '0';

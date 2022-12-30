@@ -3,22 +3,22 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
-entity filtre_TB is
+entity filter_TB is
 end entity;
 
-architecture filtre_TB_arch of filtre_TB is
+architecture filter_TB_arch of filter_TB is
     
     signal entree_TB : std_logic_vector(11 downto 0);
     signal sortie_TB : std_logic_vector(11 downto 0);
     
-    component filtre
+    component filter
         port(entree  : in  std_logic_vector(11 downto 0);
              sortie : out std_logic_vector(11 downto 0));
     end component;
     
 begin
 
-    DUT1 : filtre port map(entree => entree_TB,
+    DUT1 : filter port map(entree => entree_TB,
                            sortie => sortie_TB);
 
     

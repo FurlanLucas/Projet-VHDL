@@ -8,13 +8,12 @@ end entity;
 
 architecture peakDetector_TB_arch of peakDetector_TB is
 
-	component peakDetector
+	component peakDetector1
 		port(CLK    : in std_logic;
 		     CE     : in std_logic;
 			 reset  : in std_logic;
 			 entree : in std_logic_vector(11 downto 0);
-			 sortie: out std_logic_vector(13 downto 0);
-			 test : out std_logic);
+			 sortie: out std_logic_vector(13 downto 0));
 	end component;
 	
 	signal CLK_TB    : std_logic;
@@ -22,16 +21,14 @@ architecture peakDetector_TB_arch of peakDetector_TB is
 	signal reset_TB  : std_logic;
  	signal entree_TB : std_logic_vector(11 downto 0);
 	signal sortie_TB : std_logic_vector(13 downto 0);
-	signal test_TB :  std_logic;
 	
 begin
 
-	DUT : peakDetector port map(CLK => CLK_TB,
-	                            CE => CE_TB,
-								reset => reset_TB,
-								entree => entree_TB,
-								sortie => sortie_TB,
-								test => test_TB);
+	DUT : peakDetector1 port map(CLK => CLK_TB,
+	                             CE => CE_TB,
+								 reset => reset_TB,
+								 entree => entree_TB,
+								 sortie => sortie_TB);
 				
 	CLK : process
 	begin
@@ -44,7 +41,7 @@ begin
     CE : process
 	begin
 		CE_TB <= '0';
-		wait for 370 ns;
+		wait for 7000 ns;
 		CE_TB <= '1';
 		wait for 30 ns;
 	end process;
