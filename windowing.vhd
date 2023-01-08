@@ -16,9 +16,12 @@ end entity;
 architecture windowing_arch of windowing is
 	
 	-- Constants
-	constant WindowWidth2  : integer := 262144;
-	constant WindowWidth : integer := 524288;
-	constant WindowBits   : integer := 19;
+	--constant WindowWidth2  : integer := 262144;
+	--constant WindowWidth : integer := 524288;
+	--constant WindowBits   : integer := 19;
+	constant WindowWidth2  : integer := 128;
+	constant WindowWidth : integer := 256;
+	constant WindowBits   : integer := 8;
 	
 	-- Signal declaration
     signal counter_fenetre : unsigned(WindowBits-1 downto 0)          := to_unsigned(WindowWidth-1, WindowBits);

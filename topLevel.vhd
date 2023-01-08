@@ -198,7 +198,7 @@ begin
     windowing_DUT : windowing port map(CLK    => CLK,
                                        CE => CE_input,
                                        reset => RESET,
-                                       entree => accel_mod_filtered,
+                                       entree => accel_mod,
                                        sortie => accel_mod_windowing,
                                        CE_windowing => LED_windowing_signal);                                                                              
     ----------------------------------------------------------------------------------------------------------------

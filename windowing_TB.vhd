@@ -27,11 +27,11 @@ architecture windowing_TB_arch of windowing_TB is
 begin
 
 	DUT : windowing port map(CLK => CLK_TB,
-	                            CE => CE_TB,
-								reset => reset_TB,
-								entree => entree_TB,
-								sortie => sortie_TB,
-								CE_windowing => CE_windowing_TB);
+	                         CE => CE_TB,
+					         reset => reset_TB,
+							 entree => entree_TB,
+							 sortie => sortie_TB,
+							 CE_windowing => CE_windowing_TB);
 				
 	CLK : process
 	begin
@@ -44,7 +44,7 @@ begin
     CE : process
 	begin
 		CE_TB <= '0';
-		wait for 390 ns;
+		wait for 100 ns;
 		CE_TB <= '1';
 		wait for 10 ns;
 	end process;
