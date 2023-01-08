@@ -21,7 +21,7 @@ architecture peakDetector2_arch of peakDetector2 is
     signal CE_P     : std_logic := '0';
 	signal entreeP  : std_logic_vector(11 downto 0) := std_logic_vector(to_unsigned(0, 12));
 	signal entreePP : std_logic_vector(11 downto 0) := std_logic_vector(to_unsigned(0, 12));
-
+    signal bruit : unsigned(11 downto 0) := to_unsigned(7, 12);
 begin
     
     -- Counter process
@@ -37,7 +37,7 @@ begin
                     
             -- Check for new change --------------------------------
             if (CE = '1') and (CE_P = '0') then -- If there is some input change                
-                if (entreeP > entreePP) and (entreeP > entree) then -- Check for a peak  
+                if (entreeP > std_logic_vector(unsigned(entreePP) + bruit)) and (entreeP > std_logic_vector(unsigned(entree) + bruit)) then -- Check for a peak  
                     buff <= buff + 1;        
                 end if;
 				entreePP <= entreeP;
