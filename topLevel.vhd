@@ -93,14 +93,6 @@ architecture Behavioral of topLevel is
              CE    : out std_logic);
     end component;
     
-    component filter is -- Filter that takes the mean value for a number of successive input values
-        port(CLK    : in std_logic;
-             RESET  : in std_logic;
-             CE     : in std_logic;
-             entree : in  std_logic_vector(11 downto 0);
-             sortie : out std_logic_vector(11 downto 0));
-    end component;
-
     component transcodeur is -- Transcoder module
         port(compteur_valeur    : in  std_logic_vector(13 downto 0);
              mod_valeur         : in  std_logic_vector(11 downto 0);
@@ -173,7 +165,7 @@ begin
                                          CE     => CE_input);                                 
                     
     transcodeur_DUT : transcodeur port map(compteur_valeur => compteur_val,  
-                                           mod_valeur => accel_mod_filtered,
+                                           mod_valeur => accel_mod,
                                            sortie_uni_comp    => aff4,
                                            sortie_dez_comp    => aff5,
                                            sortie_cen_comp    => aff6,
@@ -181,13 +173,7 @@ begin
                                            sortie_uni_mod    => aff0,
                                            sortie_dez_mod    => aff1,
                                            sortie_cen_mod    => aff2,
-                                           sortie_mil_mod    => aff3);
-                                     
-    filter_DUT : filter port map(CLK => CLK,
-                                 RESET => RESET,
-                                 CE => CE_input,
-                                 entree => accel_mod,
-                                 sortie => accel_mod_filtered);                               
+                                           sortie_mil_mod    => aff3);                          
                                   
     peakDetector_DUT : peakDetector2 port map(CLK    => CLK,
                                               CE => LED_windowing_signal,
