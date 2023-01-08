@@ -165,7 +165,7 @@ begin
                                          CE     => CE_input);                                 
                     
     transcodeur_DUT : transcodeur port map(compteur_valeur => compteur_val,  
-                                           mod_valeur => accel_mod,
+                                           mod_valeur => accel_mod_windowing,
                                            sortie_uni_comp    => aff4,
                                            sortie_dez_comp    => aff5,
                                            sortie_cen_comp    => aff6,

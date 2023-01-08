@@ -46,7 +46,7 @@ begin
             ----------------------------------------------------------- 
             
             CE_P <= CE;
-            sortie <= std_logic_vector(buff(13 downto 0));
+            sortie <= std_logic_vector(buff(14 downto 1));
         end if;   
         -----------------------------------------------------
         

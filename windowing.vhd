@@ -16,12 +16,15 @@ end entity;
 architecture windowing_arch of windowing is
 	
 	-- Constants
-	--constant WindowWidth2  : integer := 262144;
+	constant WindowWidth  : integer := 262144;
 	--constant WindowWidth : integer := 524288;
-	--constant WindowBits   : integer := 19;
-	constant WindowWidth2  : integer := 128;
-	constant WindowWidth : integer := 256;
-	constant WindowBits   : integer := 8;
+	constant WindowWidth2  : integer := 131057;
+	constant WindowBits   : integer := 18;
+	
+	-- Constants pour la simulaiton du test bench (une fenêtre plus petite)
+	--constant WindowWidth2  : integer := 128;
+	--constant WindowWidth : integer := 256;
+	--constant WindowBits   : integer := 8;
 	
 	-- Signal declaration
     signal counter_fenetre : unsigned(WindowBits-1 downto 0)          := to_unsigned(WindowWidth-1, WindowBits);
@@ -43,11 +46,11 @@ begin
             if (CE = '1') then -- If there is some input change
                 -- Check if it is the window's end ------------------------------------------------
                 if (counter_fenetre = to_unsigned(WindowWidth-1, WindowBits)) then      
-                    CE_windowing <= '0';        
+                    CE_windowing <= '1';        
                     sortie <= std_logic_vector(buff(WindowBits+11 downto WindowBits));
                     buff <= to_unsigned(0, WindowBits+12);
                 elsif (counter_fenetre = to_unsigned(WindowWidth2-1, WindowBits)) then 
-                    CE_windowing <= '1';
+                    CE_windowing <= '0';
                 else
                     buff <= buff + (to_unsigned(0, WindowBits) + unsigned(entree));
                 end if;   
